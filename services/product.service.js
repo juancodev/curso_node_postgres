@@ -1,9 +1,13 @@
 const faker = require('faker');
 const boom = require('@hapi/boom');
 
+const {
+  models
+} = require('../libs/sequelize');
+
 class ProductsService {
 
-  constructor(){
+  constructor() {
     this.products = [];
     this.generate();
   }
@@ -30,8 +34,14 @@ class ProductsService {
     return newProduct;
   }
 
-  find() {
-    return this.products;
+  async find() {
+    // const query = 'SELECT * FROM tasks';
+    // // nos devuelve sequelize un array y la primera posición es la data
+    // const [data] = await sequelize.query(query);
+    // return data;
+
+    const response = await models.Product.findAll();
+    return response;
   }
 
   async findOne(id) {
@@ -64,7 +74,9 @@ class ProductsService {
       throw boom.notFound('product not found');
     }
     this.products.splice(index, 1);
-    return { id };
+    return {
+      id
+    };
   }
 
 }
