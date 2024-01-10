@@ -37,7 +37,8 @@ const sequelize = new Sequelize(URI, {
 
 setupModels(sequelize);
 
-// Va a tomar esos modelos y creará la tabla con los compos pero si existen los datos no se reemplaza
-sequelize.sync();
+// Va a tomar esos modelos y creará la tabla con los compos pero si existen los datos no se reemplaza, no se utiliza en produccion
+
+//sequelize.sync();
 
 module.exports = sequelize;
