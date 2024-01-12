@@ -1,15 +1,15 @@
 const boom = require('@hapi/boom');
 
 // const getConnection = require('../libs/postgres.js');
-const pool = require('../libs/postgres.pool.js');
+//const pool = require('../libs/postgres.pool.js');
 const {
   models
 } = require('../libs/sequelize.js');
 
 class UserService {
   constructor() {
-    this.pool = pool;
-    this.pool.on('error', (err) => console.error(err));
+    // this.pool = pool;
+    // this.pool.on('error', (err) => console.error(err));
   }
 
   async create(data) {
