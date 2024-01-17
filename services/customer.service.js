@@ -10,12 +10,18 @@ class CustomerService {
   }
 
   async create(customer) {
-    const newCustomer = await models.Customer.create(customer);
+    const newCustomer = await models.Customer.create(customer, {
+      // creamos una asosiación del usuario y él automáticamente crea el cliente y el usuario
+      include: ['user']
+    });
     return newCustomer;
   }
 
   async find() {
-    const response = await models.Customer.findAll();
+    // para traernos los valores relacionados debemos indicar la asosiación
+    const response = await models.Customer.findAll({
+      include: ['user']
+    });
     return response;
   }
 

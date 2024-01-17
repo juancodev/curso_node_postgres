@@ -8,6 +8,11 @@ const description = Joi.string().max(400);
 const phone = Joi.string();
 const userId = Joi.number().integer();
 
+const {
+  createUserSchema,
+  updateUserSchema
+} = require('./user.schema');
+
 const getCustomerSchema = Joi.object({
   id: id.required()
 });
@@ -18,7 +23,8 @@ const createCustomerSchema = Joi.object({
   rif: rif.required(),
   description: description,
   phone: phone.required(),
-  userId: userId.required(),
+  // crear un usuario directamente creamos un cliente
+  user: createUserSchema
 
 });
 
@@ -28,7 +34,7 @@ const updateCustomerSchema = Joi.object({
   rif,
   description,
   phone,
-  userId,
+  user: updateUserSchema,
 });
 
 module.exports = {

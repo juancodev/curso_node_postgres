@@ -22,7 +22,8 @@ function setupModels(sequelize) {
   Customer.init(customerSchema, Customer.config(sequelize));
 
   // asosiacion o relacion de 1 a 1
-  Customer.associate(sequelize.models)
+  User.associate(sequelize.models);
+  Customer.associate(sequelize.models);
 };
 
 module.exports = setupModels;

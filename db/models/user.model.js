@@ -40,8 +40,12 @@ const userSchema = {
 }
 
 class User extends Model {
-  static associate() {
-
+  static associate(models) {
+    this.hasOne(models.Customer, {
+      as: 'customer',
+      // la relación está del lado del customer
+      foreignKey: 'user_id'
+    });
   }
 
   static config(sequelize) {

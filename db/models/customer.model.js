@@ -48,6 +48,7 @@ const customerSchema = {
     field: 'user_id',
     allowNull: false,
     type: DataTypes.INTEGER,
+    unique: true,
     // acá esta la llave foranea
     references: {
       model: USER_TABLE,
