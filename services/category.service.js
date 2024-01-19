@@ -1,19 +1,33 @@
 const boom = require('@hapi/boom');
 
+const {
+  models
+} = require('./../libs/sequelize');
+
 class CategoryService {
 
-  constructor(){
-  }
+  constructor() {}
+
   async create(data) {
-    return data;
+    const newCategory = await models.Category.create(data);
+    return newCategory;
   }
 
   async find() {
-    return [];
+    const categories = await models.Category.findAll();
+    return categories;
   }
 
   async findOne(id) {
-    return { id };
+    // relación de uno a muchos, esto quiere decir, que me trae una sola categoría pero además me trae todos los productos relacionados a ella
+    const category = await models.Category.findByPk(id, {
+      include: ['products']
+    });
+
+    if (!category) {
+      throw boom.notFound('The category not found');
+    }
+    return category;
   }
 
   async update(id, changes) {
@@ -24,7 +38,9 @@ class CategoryService {
   }
 
   async delete(id) {
-    return { id };
+    return {
+      id
+    };
   }
 
 }

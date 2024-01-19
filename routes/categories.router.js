@@ -2,7 +2,11 @@ const express = require('express');
 
 const CategoryService = require('./../services/category.service');
 const validatorHandler = require('./../middlewares/validator.handler');
-const { createCategorySchema, updateCategorySchema, getCategorySchema } = require('./../schemas/category.schema');
+const {
+  createCategorySchema,
+  updateCategorySchema,
+  getCategorySchema
+} = require('./../schemas/category.schema');
 
 const router = express.Router();
 const service = new CategoryService();
@@ -20,7 +24,9 @@ router.get('/:id',
   validatorHandler(getCategorySchema, 'params'),
   async (req, res, next) => {
     try {
-      const { id } = req.params;
+      const {
+        id
+      } = req.params;
       const category = await service.findOne(id);
       res.json(category);
     } catch (error) {
@@ -47,7 +53,9 @@ router.patch('/:id',
   validatorHandler(updateCategorySchema, 'body'),
   async (req, res, next) => {
     try {
-      const { id } = req.params;
+      const {
+        id
+      } = req.params;
       const body = req.body;
       const category = await service.update(id, body);
       res.json(category);
@@ -61,9 +69,13 @@ router.delete('/:id',
   validatorHandler(getCategorySchema, 'params'),
   async (req, res, next) => {
     try {
-      const { id } = req.params;
+      const {
+        id
+      } = req.params;
       await service.delete(id);
-      res.status(201).json({id});
+      res.status(201).json({
+        id
+      });
     } catch (error) {
       next(error);
     }
