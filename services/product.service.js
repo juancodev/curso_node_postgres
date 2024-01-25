@@ -29,15 +29,26 @@ class ProductsService {
     return newProduct;
   }
 
-  async find() {
+  async find(query) {
     // const query = 'SELECT * FROM tasks';
     // // nos devuelve sequelize un array y la primera posición es la data
     // const [data] = await sequelize.query(query);
     // return data;
 
-    const products = await models.Product.findAll({
+    const options = {
       include: ['category']
-    });
+    }
+    const {
+      limit,
+      offset
+    } = query;
+
+    if (limit && offset) {
+      options.limit = limit
+      options.offset = offset
+    }
+
+    const products = await models.Product.findAll(options);
     return products;
   }
 
