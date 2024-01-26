@@ -5,10 +5,7 @@ const {
   Sequelize
 } = require('sequelize')
 
-const {
-  PRODUCT_TABLE,
-  productSchema
-} = require('./../models/product.model');
+
 
 const {
   CUSTOMER_TABLE,
@@ -23,7 +20,6 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
-    await queryInterface.createTable(PRODUCT_TABLE, productSchema);
     await queryInterface.createTable(CUSTOMER_TABLE, {
       id: {
         allowNull: false,
@@ -68,7 +64,6 @@ module.exports = {
      * Example:
      * await queryInterface.dropTable('users');
      */
-    await queryInterface.dropTable(PRODUCT_TABLE);
     await queryInterface.dropTable(CUSTOMER_TABLE);
   }
 };
