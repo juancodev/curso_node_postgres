@@ -4,6 +4,7 @@ const {
   dbHost,
   dbName,
   dbPort,
+  dbUrl
   //dbMysqlUser,
   //dbMysqlPassword,
   //dbMysqlPort,
@@ -30,7 +31,7 @@ module.exports = {
     dialect: 'postgres'
   },
   production: {
-    url: URI,
+    url: dbUrl,
     dialect: 'postgres'
   }
 }
