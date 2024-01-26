@@ -1,5 +1,8 @@
 // const faker = require('faker');
 const boom = require('@hapi/boom');
+const {
+  Op
+} = require('sequelize');
 
 const {
   models
@@ -36,7 +39,8 @@ class ProductsService {
     // return data;
 
     const options = {
-      include: ['category']
+      include: ['category'],
+      where: {}
     }
     const {
       limit,
@@ -46,6 +50,26 @@ class ProductsService {
     if (limit && offset) {
       options.limit = limit
       options.offset = offset
+    }
+
+    const {
+      price
+    } = query;
+    if (price) {
+      options.where.price = price;
+    }
+
+    const {
+      price_min,
+      price_max
+    } = query;
+    if (price_min && price_max) {
+      options.where.price = {
+        // gte hace referencia a mayor o igual (>)
+        [Op.gte]: price_min,
+        // gte hace referencia a menor o igual (<)
+        [Op.lte]: price_max
+      };
     }
 
     const products = await models.Product.findAll(options);

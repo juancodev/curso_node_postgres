@@ -10,6 +10,9 @@ const categoryId = Joi.number().integer();
 const limit = Joi.number().integer();
 const offset = Joi.number().integer();
 
+const price_min = Joi.number().integer();
+const price_max = Joi.number().integer();
+
 const createProductSchema = Joi.object({
   name: name.required(),
   price: price.required(),
@@ -32,7 +35,16 @@ const getProductSchema = Joi.object({
 
 const queryProductSchema = Joi.object({
   limit,
-  offset
+  offset,
+  price,
+  price_min,
+  // hacer requerido un campo opcional
+  price_max: price_max.when('price_min', {
+    // preguntamos si es un entero o hay cualquier número
+    is: Joi.number().integer().required(),
+    // respondemos como requerido
+    then: Joi.required()
+  })
 });
 
 module.exports = {

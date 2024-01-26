@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const config = {
   env: process.env.NODE_ENV || 'dev',
+  isProd: process.env.NODE_ENV === 'production',
   port: process.env.PORT || 3600,
   dbUser: process.env.DB_USER,
   dbPassword: process.env.DB_PASSWORD,
@@ -10,7 +11,8 @@ const config = {
   dbPort: process.env.DB_PORT,
   dbMysqlUser: process.env.DB_MYSQL_USER,
   dbMysqlPassword: process.env.DB_MYSQL_PASSWORD,
-  dbMysqlPort: process.env.DB_MYSQL_PORT
+  dbMysqlPort: process.env.DB_MYSQL_PORT,
+  dbUrl: process.env.DATABASE_URL
 }
 
 module.exports = config;
