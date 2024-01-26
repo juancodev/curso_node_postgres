@@ -3,12 +3,13 @@ const {
 } = require('sequelize');
 
 const {
-  // dbUser,
-  // dbPassword,
-  // dbHost,
-  // dbName,
-  // dbPort,
-  dbUrl
+  dbUser,
+  dbPassword,
+  dbHost,
+  dbName,
+  dbPort,
+  dbUrl,
+  isProd
   // dbMysqlUser,
   // dbMysqlPassword,
   // dbMysqlPort,
@@ -30,8 +31,21 @@ const setupModels = require('../db/models');
 // conexión con mysql
 // const URI = `mysql://${USER}:${PASSWORD}@${dbHost}:${dbMysqlPort}/${dbName}`
 
+let URI = '';
+
+if (isProd) {
+  URI = dbUrl
+} else {
+  // codificar los datos sencibles para una cadena de conexión
+  const USER = encodeURIComponent(dbUser);
+  const PASSWORD = encodeURIComponent(dbPassword);
+
+  // cadena de conexión remota de una db
+  URI = `postgres://${USER}:${PASSWORD}@${dbHost}:${dbPort}/${dbName}`;
+}
+
 //dialect cambiarlo a la base de datos que vayamos a utilizar: postgres o mysql
-const sequelize = new Sequelize(dbUrl, {
+const sequelize = new Sequelize(URI, {
   dialect: 'postgres',
   logging: console.log,
 });

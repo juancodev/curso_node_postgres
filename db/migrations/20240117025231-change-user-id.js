@@ -27,12 +27,13 @@ module.exports = {
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     /**
      * Add reverting commands here.
      *
      * Example:
      * await queryInterface.dropTable('users');
      */
+    await queryInterface.removeColumn(CUSTOMER_TABLE, 'user_id');
   }
 };
