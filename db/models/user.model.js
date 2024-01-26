@@ -44,7 +44,7 @@ class User extends Model {
     this.hasOne(models.Customer, {
       as: 'customer',
       // la relación está del lado del customer
-      foreignKey: 'user_id'
+      foreignKey: 'userId'
     });
   }
 
