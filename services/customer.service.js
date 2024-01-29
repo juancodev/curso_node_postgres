@@ -1,4 +1,5 @@
 const boom = require('@hapi/boom');
+const bcrypt = require('bcrypt');
 
 const {
   models
@@ -10,10 +11,20 @@ class CustomerService {
   }
 
   async create(customer) {
-    const newCustomer = await models.Customer.create(customer, {
+    const hash = await bcrypt.hash(customer.user.password, 10);
+    const newData = {
+      ...customer,
+      user: {
+        ...customer.user,
+        password: hash
+      }
+    }
+    const newCustomer = await models.Customer.create(newData, {
       // creamos una asosiación del usuario y él automáticamente crea el cliente y el usuario
       include: ['user']
     });
+
+    delete newCustomer.user.dataValues.password;
     return newCustomer;
   }
 

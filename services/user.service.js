@@ -1,4 +1,5 @@
 const boom = require('@hapi/boom');
+const bcrypt = require('bcrypt');
 
 // const getConnection = require('../libs/postgres.js');
 //const pool = require('../libs/postgres.pool.js');
@@ -13,7 +14,16 @@ class UserService {
   }
 
   async create(data) {
-    const newUser = await models.User.create(data);
+    // encriptamos nuestra contraseña
+    const hash = await bcrypt.hash(data.password, 10);
+    const newUser = await models.User.create({
+      ...data,
+      password: hash
+    });
+
+    // eliminar el valor del password
+    delete newUser.dataValues.password;
+
     return newUser;
   }
 
