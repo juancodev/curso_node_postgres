@@ -35,6 +35,16 @@ class UserService {
     return response;
   }
 
+  async findByEmail(email) {
+    const response = await models.User.findOne({
+      where: {
+        email
+      }
+    });
+
+    return response;
+  }
+
   async findOne(id) {
     // creamos la variable que nos va a buscar a ese id en específico.
     const user = await models.User.findByPk(id);
