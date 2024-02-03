@@ -13,7 +13,8 @@ const config = {
   dbMysqlPassword: process.env.DB_MYSQL_PASSWORD,
   dbMysqlPort: process.env.DB_MYSQL_PORT,
   dbUrl: process.env.DATABASE_URL,
-  apiKey: process.env.API_KEY
+  apiKey: process.env.API_KEY,
+  jwtSecret: process.env.JWT_SECRET,
 }
 
 module.exports = config;

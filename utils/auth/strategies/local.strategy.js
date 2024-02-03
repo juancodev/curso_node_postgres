@@ -21,6 +21,7 @@ const LocalStrategy = new Strategy({
       done(boom.unauthorized(), false);
     }
 
+    // comparar la contraseña recibida con la guardada en la base de datos
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
