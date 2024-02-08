@@ -9,6 +9,10 @@ const {
   getCategorySchema
 } = require('./../schemas/category.schema');
 
+const {
+  checkRoles
+} = require('./../middlewares/auth.handler.js')
+
 const router = express.Router();
 const service = new CategoryService();
 
@@ -41,6 +45,7 @@ router.post('/',
   passport.authenticate('jwt', {
     session: false
   }),
+  checkRoles('admin'),
   validatorHandler(createCategorySchema, 'body'),
   async (req, res, next) => {
     try {
