@@ -35,4 +35,17 @@ router.post('/recovery', async (req, res, next) => {
   }
 });
 
+router.post('/change-password', /* crear middleware de datos */ async (req, res, next) => {
+  try {
+    const {
+      token,
+      newPassword
+    } = req.body;
+    const response = await service.changePassword(token, newPassword);
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+});
+
 module.exports = router;

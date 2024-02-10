@@ -27,6 +27,8 @@ class AuthService {
     }
     delete user.dataValues.password;
 
+    delete user.dataValues.recoveryToken;
+
     return user;
   }
 
@@ -49,6 +51,13 @@ class AuthService {
     if (!user) {
       boom.unauthorized();
     }
+
+    //TODO: linea a probar
+    jwt.verify(user.recoveryToken, jwtSecret, (err) => {
+      if (!err) {
+        throw boom.badRequest('You already have a active token');
+      }
+    })
 
     // en esta lógica aplicamos solamente el suscriptor
     const payload = {
@@ -83,6 +92,33 @@ class AuthService {
 
     const response = await this.sendMail(mail)
     return response;
+  };
+
+  async changePassword(token, newPassword) {
+    try {
+      const payload = jwt.verify(token, jwtSecret);
+      const user = await service.findOne(payload.sub);
+
+      // comprobamos si el token que estamos agregando es el mismo que se guardó en la base de datos
+      if (user.recoveryToken !== token) {
+        throw boom.unauthorized();
+      }
+
+      // crear nuevamente el hash de la contraseña
+      const hash = await bcrypt.hash(newPassword, 10);
+
+      // actualizamos los campos en la base de datos
+      await service.update(user.id, {
+        recoveryToken: null,
+        password: hash
+      });
+
+      return {
+        message: 'password changed'
+      }
+    } catch (error) {
+      throw boom.unauthorized();
+    }
   }
 
   async sendMail(infoMail) {
