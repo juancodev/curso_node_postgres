@@ -1,11 +1,10 @@
 const express = require('express');
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
-const {
-  jwtSecret
-} = require('./../config/config.js');
 
 const router = express.Router();
+
+const AuthService = require('./../services/auth.service.js');
+const service = new AuthService();
 
 router.post('/login',
   passport.authenticate('local', {
@@ -14,19 +13,26 @@ router.post('/login',
   async (req, res, next) => {
     try {
       const user = req.user;
-      const payload = {
-        sub: user.id,
-        role: user.role
-      }
-      const token = jwt.sign(payload, jwtSecret);
-      res.json({
-        user,
-        token
-      });
+
+      // como no hay nada asincrono en nuestro servicio de firma del token entonces podemos pasarlo directo
+      res.json(service.signToken(user));
+
     } catch (error) {
       next(error);
     }
   }
 );
+
+router.post('/recovery', async (req, res, next) => {
+  try {
+    const {
+      email
+    } = req.user;
+    const response = await service.sendMail(email);
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;
