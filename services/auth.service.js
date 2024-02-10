@@ -44,12 +44,48 @@ class AuthService {
     };
   }
 
-  async sendMail(email) {
-
+  async sendRecovery(email) {
     const user = await service.findByEmail(email);
     if (!user) {
       boom.unauthorized();
     }
+
+    // en esta lógica aplicamos solamente el suscriptor
+    const payload = {
+      sub: user.id
+    };
+
+    // generamos un token firmado con expiración de 15 minutos
+    const token = jwt.sign(payload, jwtSecret, {
+      expiresIn: '15min '
+    });
+
+    // generamos un link para la vista de recuperación de contraseña que se le envía un query en la url
+    const link = `http://myfrontend.com/recovery?token=${token}`;
+
+    // esperamos a que se actualice en la tabla de nuestro usuario el registro del token
+    await service.update(user.id, {
+      recoveryToken: token
+    })
+
+    // información sobre quién envia, recibe y el cuerpo del correo
+    const mail = {
+      from: process.env.USER_EMAIL,
+      to: `${user.email}`,
+      subject: "Mensaje de recuperación de contraseña",
+      text: "Clave de recuperación",
+      html: `
+        <b>link de recuperación 🔐 =></b>
+        <br>
+        <a href="${link}" target="_blank">Generar nueva contraseña</a>
+      `
+    };
+
+    const response = await this.sendMail(mail)
+    return response;
+  }
+
+  async sendMail(infoMail) {
 
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -61,17 +97,11 @@ class AuthService {
       }
     });
 
-    await transporter.sendMail({
-      from: process.env.USER_EMAIL,
-      to: `${user.email}`,
-      subject: "Mensaje de recuperación de contraseña",
-      text: "Clave de recuperación",
-      html: "<b>Clave de recuperación 🔐</b>"
-    });
+    await transporter.sendMail(infoMail);
 
     return {
       message: "mail sent"
-    }
+    };
   }
 }
 
