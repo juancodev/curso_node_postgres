@@ -17,7 +17,7 @@ const port = process.env.PORT || 3600;
 
 app.use(express.json());
 
-const whitelist = ['http://localhost:8080', 'https://myapp.co'];
+const whitelist = ['http://localhost:8080', 'https://store-node-api.onrender.com'];
 const options = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
