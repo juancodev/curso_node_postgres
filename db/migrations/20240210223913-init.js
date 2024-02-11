@@ -55,7 +55,6 @@ module.exports = {
 
     // crear un usuario super admin al iniciar la migracion
     await queryInterface.bulkInsert(USER_TABLE, [{
-      username: "admin",
       email: "admin@admin.com",
       password: process.env.DB_SUPERADMIN,
       role: "admin",
