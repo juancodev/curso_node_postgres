@@ -1,5 +1,6 @@
 'use strict';
 require('dotenv').config();
+const bcrypt = require('bcrypt');
 
 const {
   USER_TABLE
@@ -54,9 +55,11 @@ module.exports = {
     });
 
     // crear un usuario super admin al iniciar la migracion
+    const hash = bcrypt.hash(process.env.DB_SUPERADMIN, 10);
+
     await queryInterface.bulkInsert(USER_TABLE, [{
       email: "admin@admin.com",
-      password: process.env.DB_SUPERADMIN,
+      password: hash,
       role: "admin",
       create_at: new Date()
     }])
