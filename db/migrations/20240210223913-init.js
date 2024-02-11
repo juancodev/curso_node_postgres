@@ -69,7 +69,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.DataTypes.INTEGER
+        type: Sequelize.DataTypes.INTEGER,
       },
       name: {
         allowNull: false,
@@ -80,6 +80,14 @@ module.exports = {
         type: Sequelize.DataTypes.STRING,
         field: 'last_name',
       },
+      rif: {
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER,
+      },
+      description: {
+        allowNull: true,
+        type: Sequelize.DataTypes.STRING,
+      },
       phone: {
         allowNull: true,
         type: Sequelize.DataTypes.STRING,
@@ -88,7 +96,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DataTypes.DATE,
         field: 'created_at',
-        defaultValue: Sequelize.NOW,
+        defaultValue: Sequelize.NOW
       },
       userId: {
         field: 'user_id',
@@ -100,7 +108,7 @@ module.exports = {
           key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
       }
     });
 
@@ -233,7 +241,7 @@ module.exports = {
           key: 'id'
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL'
+        onDelete: 'CASCADE'
       }
     });
 
