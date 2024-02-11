@@ -58,7 +58,7 @@ module.exports = {
       email: "admin@admin.com",
       password: process.env.DB_SUPERADMIN,
       role: "admin",
-      created_at: new Date()
+      createdAt: new Date()
     }])
 
     await queryInterface.createTable(CUSTOMER_TABLE, {
